@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { SettingsController } from './controllers/SettingsController';
-
-const routes = Router();
+import { UsersController } from './controllers/UsersController';
 
 /**
  * Tipos de Parâmetros
@@ -10,13 +9,15 @@ const routes = Router();
  * Query Params => Filtros e buscas
  * http://localhost:3333/settings/1?search=algumacoisa
  * 
- * Body Params => {
- * 
- * }
+ * Body Params => {}
  */
 
-const settingsController = new SettingsController();
+const routes = Router();
 
-routes.post('/settings', settingsController.create)
+const settingsController = new SettingsController();
+const usersController = new UsersController();
+
+routes.post('/settings', settingsController.create);
+routes.post('/users', usersController.create);
 
 export { routes };
