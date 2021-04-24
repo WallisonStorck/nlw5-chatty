@@ -15,11 +15,11 @@ export class CreateMessages1619096133777 implements MigrationInterface {
                     {
                         name: "admin_id",
                         type: "uuid",
-                        isNullable: true,
+                        isNullable: true
                     },
                     {
                         name: "user_id",
-                        type: "uuid",
+                        type: "uuid"
                     },
                     {
                         name: "text",

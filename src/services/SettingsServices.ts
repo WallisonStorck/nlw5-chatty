@@ -18,7 +18,7 @@ class SettingsServices {
 
     // Select * from settings where username = "username" limit 1;
     const userAlreadyExists = await this.settingsRepository.findOne({
-      username
+      username,
     });
 
     if (userAlreadyExists) {
