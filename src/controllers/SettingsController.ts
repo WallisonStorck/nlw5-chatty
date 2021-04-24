@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { json, Request, Response } from 'express';
 import { SettingsServices } from '../services/SettingsServices';
 
 class SettingsController {
@@ -19,6 +19,28 @@ class SettingsController {
 
     }
   }
+
+  async findByUserName(request: Request, response: Response) {
+    const { username } = request.params;
+
+    const settingsServices = new SettingsServices();
+
+    const settings = await settingsServices.findByUserName(username);
+
+    return response.json(settings);
+  }
+
+  async update(request: Request, response: Response) {
+    const { username } = request.params;
+    const { chat } = request.body;
+
+    const settingsServices = new SettingsServices();
+
+    const settings = await settingsServices.update(username, chat);
+
+    return response.json(settings);
+  }
+
 }
 
 export { SettingsController };

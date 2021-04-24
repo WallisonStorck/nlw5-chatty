@@ -3,7 +3,7 @@ import { User } from "../entities/User";
 import { UserRepository } from "../repositories/UserRepository";
 
 
-class UserService {
+class UsersService {
   private usersRepository: Repository<User>;
 
   constructor() {
@@ -16,21 +16,24 @@ class UserService {
     const userExists = await this.usersRepository.findOne({
       email,
     });
-
     // Se existir, retornar user
     if (userExists) {
       return userExists;
     }
-
     const user = this.usersRepository.create({
       email,
     });
-
+    // Se não existir, salvar no DB.
     await this.usersRepository.save(user);
 
-    // Se não existir, salvar no DB.
+    return user;
+  }
+
+  async findByEmail(email: string) {
+    const user = await this.usersRepository.findOne({ email });
+
     return user;
   }
 }
 
-export { UserService };
+export { UsersService };
