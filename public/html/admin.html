@@ -15,9 +15,9 @@
 
   <body>
     <div id="list_users"></div>
-
+    <!-- Estilizar essa div ta muito feia -->
     <script id="template" type="x-tmpl-mustache">
-      <div id="user{{id}}">
+      <div class="list_user" id="user{{id}}">
           <span class="email">Email: {{email}}</span>
           <button class="btn_atd" onclick="call('{{id}}')">Entrar em atendimento</button>
       </div>

@@ -1,5 +1,6 @@
 const socket = io();
 let connectionsUsers = [];
+let connectionInSupport = []; //Cria uma variavel para armazenar os atendimentos
 
 socket.on("admin_list_all_users", (connections) => {
   connectionsUsers = connections;
@@ -21,6 +22,8 @@ function call(id) {
   const connection = connectionsUsers.find(
     (connection) => connection.socket_id === id
   );
+
+  connectionInSupport.push(connection); //Quando encontrar a conexao, coloca dentro do array de atendimentos
 
   const template = document.getElementById("admin_template").innerHTML;
 
@@ -48,7 +51,7 @@ function call(id) {
       if (message.admin_id === null) {
         createDiv.className = "admin_message_client";
 
-        createDiv.innerHTML = `<span>${connection.user.email} </span>`;
+        createDiv.innerHTML = `<span>Cliente: ${connection.user.email} </span>`;
         createDiv.innerHTML += `<span>${message.text}</span>`;
         createDiv.innerHTML += `<span class="admin_date">${dayjs(
           message.created_at
@@ -56,7 +59,7 @@ function call(id) {
       } else {
         createDiv.className = "admin_message_admin";
 
-        createDiv.innerHTML = `Atendente: <span>${message.text}</span>`;
+        createDiv.innerHTML = `<span>${message.text}</span>`;
         createDiv.innerHTML += `<span class="admin_date">${dayjs(
           message.created_at
         ).format("DD/MM/YYYY HH:mm:ss")}`;
@@ -81,8 +84,8 @@ function sendMessage(id) {
 
   const createDiv = document.createElement("div");
   createDiv.className = "admin_message_admin";
-  createDiv.innerHTML = `Atendente: <span>${params.text}</span>`;
-  createDiv.innerHTML += `<span class="admin_date>${dayjs().format(
+  createDiv.innerHTML = `<span>${params.text}</span>`;
+  createDiv.innerHTML += `<span class="admin_date_answer">${dayjs().format(
     "DD/MM/YYYY HH:mm:ss"
   )}`;
 
@@ -92,10 +95,9 @@ function sendMessage(id) {
 }
 
 socket.on("admin_receive_message", (data) => {
-  console.log(data);
-  const connection = connectionsUsers.find(
-    (connection) => (connection.socket_id = data.socket_id)
-  );
+  const connection = connectionInSupport.find(
+    (connection) => connection.socket_id === data.socket_id
+  ); //Aqui utiliza o array de atendimento que foi inserido acima
 
   const divMessages = document.getElementById(
     `allMessages${connection.user_id}`
@@ -104,7 +106,7 @@ socket.on("admin_receive_message", (data) => {
   const createDiv = document.createElement("div");
 
   createDiv.className = "admin_message_client";
-  createDiv.innerHTML = `<span>${connection.user.email} </span>`;
+  createDiv.innerHTML = `<span>Cliente: ${connection.user.email} </span>`;
   createDiv.innerHTML += `<span>${data.message.text}</span>`;
   createDiv.innerHTML += `<span class="admin_date">${dayjs(
     data.message.created_at
