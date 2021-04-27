@@ -51,16 +51,16 @@ io.on("connect", (socket) => {
 
     const allMessages = await messagesService.listByUser(user_id);
 
-    socket.emit("client_list_all_messages", params, (call, err) => {
-      if (err) {
-        console.error(err);
-      } else {
-        console.log(call);
-      }
-    })
+    socket.emit("client_list_all_messages", allMessages);
+
+    // socket.emit("client_list_all_messages", params, (call, err) => {
+    //   if (err) {
+    //     console.error(err);
+    //   } else {
+    //     console.log(call);
+    //   }
+    // });
   });
 
-  socket.on("client_first_access", messages => {
-    console.log("messages", messages);
-  })
+
 });
